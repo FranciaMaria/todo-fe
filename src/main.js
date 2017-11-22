@@ -5,6 +5,9 @@ import App from './App'
 import Task from './components/Task'
 import router from './router'
 import axios from 'axios';
+import BootstrapVue from 'bootstrap-vue'
+
+Vue.use(BootstrapVue);
 
 Vue.config.productionTip = false
 axios.defaults.headers.common['Content-Type'] = 'application/json'
