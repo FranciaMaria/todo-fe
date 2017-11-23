@@ -32,10 +32,9 @@
                         </div>
                    
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" @click="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" @click="createTask" class="btn btn-primary">Submit</button>
                     </div>
-
 
                    </div>
                 </div><br>
@@ -65,7 +64,7 @@
                         </div>
                     
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <button type="button" @click="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
                         <button type="button" @click="updateTask" class="btn btn-primary">Submit</button>
                     </div>
                   </div>
@@ -116,6 +115,7 @@
                                     <button @click="deleteTask(task)" class="btn btn-danger btn-xs">Delete</button>
                                 </td>
                             </tr>
+                            
                             </tbody>
                         </table>
                     </div>
@@ -158,6 +158,11 @@
         /* initAddTask() {
             // $("#add_task_model").modal("show");
         }, */
+        closeModal() {
+          this.create = false;
+          this.edit = false;
+          window.location.href = 'http://localhost:8080';
+        },
         newTask(){
           this.create = true;
         },
@@ -273,6 +278,6 @@
            window.location.href = 'http://localhost:8080/';
             // }
         },
-      },
+      }
     };
 </script>

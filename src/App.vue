@@ -1,13 +1,21 @@
 <template>
-  <router-view/>
+  <div>
+    <LayoutHeader></LayoutHeader>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
+import LayoutHeader from './components/LayoutHeader'
+
 export default {
-  name: 'app'
+  name: 'app',
+  components: {
+    LayoutHeader
+  }
 }
 </script>
 
 <style>
+
 </style>
