@@ -1,6 +1,6 @@
 <template>
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <router-link class="navbar-brand" to="/task">Todo List</router-link>
+  <router-link class="navbar-brand" to="/">Todo List</router-link>
     <!-- <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
         <router-link class="nav-link" to="/todoListForm">New Todo</router-link>

@@ -140,6 +140,8 @@
             description: '',
             priority: '',
             completed: false,
+            loading: false,
+            token: localStorage.getItem('token')
           },
           create: false,
           edit: false,
@@ -152,6 +154,8 @@
         };
       },
       mounted() {
+        console.log(this.token);
+        // this.fetchIt();
         this.readTasks();
       },
       methods: {
@@ -171,7 +175,8 @@
             name: this.task.name,
             description: this.task.description,
             priority: this.task.priority,
-          })
+          },
+        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then((response) => {
               this.reset();
               this.tasks.push(response.data.task);
@@ -196,7 +201,8 @@
           this.task.priority = '';
         },
         readTasks() {
-          axios.get('http://localhost:8000/api/task')
+          axios.get('http://localhost:8000/api/task',
+        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then((response) => {
               this.tasks = response.data.tasks;
             });
@@ -212,7 +218,8 @@
             name: this.update_task.name,
             description: this.update_task.description,
             priority: this.update_task.priority,
-          })
+          },
+        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
           .then(response => {
             this.tasks.push(this.update_task);
             this.edit = false;
@@ -234,7 +241,8 @@
             // let conf = confirm("Completed?");
             // if (conf === true) {
           const link = 'http://localhost:8000/api/task/complete/';
-          axios.put(link + task.id)
+          axios.put(link + task.id,
+        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then(
               this.task.completed = true,
           );
@@ -250,7 +258,8 @@
             // let conf = confirm("Uncompleted this task?");
             // if (conf === true) {
           const link = 'http://localhost:8000/api/task/completed/';
-          axios.put(link + task.id)
+          axios.put(link + task.id,
+        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             /* .then((response) => {
               this.task.completed = false;
             }); */
@@ -266,7 +275,8 @@
             // let conf = confirm("Do you really want to delete this task?");
             // if (conf === true) {
           const link = 'http://localhost:8000/api/task/';
-          axios.delete(link + task.id)
+          axios.delete(link + task.id,
+        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then((response) => {
               this.tasks.splice(task.id, 1);
             });
@@ -278,6 +288,13 @@
            window.location.href = 'http://localhost:8080/';
             // }
         },
+        /* fetchIt(){
+          this.loading = true;
+          axios.get('task?token=' + this.token).then((response) => {
+            this.tasks = response.data;
+            this.loading = false
+          });
+        }, */
       }
     };
 </script>

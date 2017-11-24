@@ -73,6 +73,7 @@ export default {
                 },
             users: [],
             errors: [],
+            statusText: ''
         }
     },
     methods:{
@@ -84,7 +85,8 @@ export default {
                 name: _this.register.name,
                 email: _this.register.email,
                 password: _this.register.password
-            })
+            },
+            {headers: {'X-Requested-With': 'XMLHttpRequest'}})
             .then((response) =>{
                 _this.users.push(respone.data.register);
                 console.dir(_this.users);
@@ -109,8 +111,16 @@ export default {
                     }
                 
             });
-            window.location.href = 'http://localhost:8080/';
+            window.location.href = 'http://localhost:8080/#/login';
+        },
+
+        getRequestHeaders(){
+              // return new HttpHeaders().set('Authorization', 'Bearer ' + window.localStorage.getItem('loginToken'));
+              axios.defaults.headers.common['Authorization'] = "Bearer" +  authtoken.token
         }
+
+        
+
     }
 }
 </script>

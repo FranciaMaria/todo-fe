@@ -71,14 +71,20 @@ methods:{
         axios.post('http://localhost:8000/api/login', { 
             email:this.email,
             password:this.password
-        })
-        .then(response=>{
+        },
+        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        .then((response) => {
         
-            let token= response.data.token;
+            /* let token= response.data.token;
             if(token){
                localStorage.setItem('token',token);
             }
-            console.log(token);
+            console.log(token); */
+            const token = response.data.token;
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace('-', '+').replace('_', '/');
+            console.log(JSON.parse(window.atob(base64)));
+            localStorage.setItem('token', token);
         })
         .catch((error) => {
 
@@ -91,7 +97,7 @@ methods:{
                 
             });
 
-            window.location.href = 'http://localhost:8080/';
+            window.location.href = 'http://localhost:8080/task';
         }
     }
 }
