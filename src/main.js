@@ -4,15 +4,16 @@ import Vue from 'vue'
 import App from './App'
 import Task from './components/Task'
 import router from './router'
-import axios from 'axios';
+import axios from 'axios'
 import BootstrapVue from 'bootstrap-vue'
+import { authService } from './shared/AuthService';
+import VueResource from 'vue-resource';
 
 Vue.use(BootstrapVue);
+Vue.use(VueResource);
 
 Vue.config.productionTip = false
-axios.defaults.headers.common['Content-Type'] = 'application/json'
 
-/* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
@@ -21,4 +22,20 @@ new Vue({
   components: { App }
   /* template: '<Task/>',
   components: { Task } */
+})
+
+axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
+axios.defaults.headers.common['Authorization'] = 'Bearer ' + window.localStorage.getItem('token')
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login' && to.path !== '/register') {
+    if (authService.isUserLoged()) {
+      router.go('/')
+      next()
+    } else {
+      next('/login')
+    }
+  } else {
+    next()
+  }
 })

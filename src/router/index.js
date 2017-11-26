@@ -3,7 +3,7 @@ import Router from 'vue-router'
 import Task from '@/components/Task'
 import Login from '@/components/Login'
 import Register from '@/components/Register'
-// import HelloWorld from '@/components/HelloWorld'
+//import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
@@ -20,6 +20,11 @@ export default new Router({
       component: Task
     },
     {
+      path: '/task',
+      name: 'Task',
+      component: Task
+    },
+    {
       path: '/login',
       name: 'Login',
       component: Login
@@ -28,6 +33,6 @@ export default new Router({
       path: '/register',
       name: 'Register',
       component: Register
-    }
+    },
   ]
 })

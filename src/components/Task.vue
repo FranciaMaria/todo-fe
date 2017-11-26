@@ -33,7 +33,8 @@
                    
                     <div class="modal-footer">
                         <button type="button" @click="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" @click="createTask" class="btn btn-primary">Submit</button>
+                        <!-- <button type="button" @click="createTask" class="btn btn-primary">Submit</button> -->
+                        <button type="button" @click="addTask(task)" class="btn btn-primary">Submit</button>
                     </div>
 
                    </div>
@@ -68,10 +69,12 @@
                         <button type="button" @click="updateTask" class="btn btn-primary">Submit</button>
                     </div>
                   </div>
+
+                  <button type="button" @click="getMyTasks" class="btn btn-primary" v-if="mytask != true">My Tasks</button><br>
                
 
                   <br><div class="panel-heading">
-                      <strong>My Tasks</strong>
+                      <strong>All Tasks</strong>
                     </div><br>
 
                     <div class="panel-body">
@@ -87,8 +90,11 @@
                                 <th>
                                     Description
                                 </th>
-                                  <th>
+                                <th>
                                     Priority
+                                </th>
+                                <th>
+                                    User ID
                                 </th>
                                 <th>
                                     Action
@@ -105,12 +111,15 @@
                                 <td>
                                     {{ task.priority }}
                                 </td>
-                                <td v-if="task.completed != true">
+                                <td>
+                                    {{ task.user_id }}
+                                </td>
+                                <td v-if="task.completed != true && task.user_id === logedUser.id">
                                     <button @click="completeTask(task)" class="btn btn-warning btn-xs">Complete</button><br>
                                     <button @click="initUpdate(index)" class="btn btn-success btn-xs">Edit</button>
                                     <button @click="deleteTask(task)" class="btn btn-danger btn-xs">Delete</button>
                                 </td>
-                                <td v-if="task.completed != false">
+                                <td v-if="task.completed != false && task.user_id === logedUser.id">
                                     <button @click="completedTask(task)" class="btn btn-default btn-xs">Completed</button>
                                     <button @click="deleteTask(task)" class="btn btn-danger btn-xs">Delete</button>
                                 </td>
@@ -130,7 +139,8 @@
     import axios from 'axios';
     import 'bootstrap/dist/css/bootstrap.css'
     import 'bootstrap-vue/dist/bootstrap-vue.css'
-
+    import { taskFormService } from '../shared/TaskFormService';
+    import { authService } from '../shared/AuthService'
     
     export default {
       data() {
@@ -140,28 +150,24 @@
             description: '',
             priority: '',
             completed: false,
+            user_id: '',
             loading: false,
             token: localStorage.getItem('token')
           },
           create: false,
           edit: false,
-         /*  name: '',
-          description: '',
-          priority: '', */
+          mytask: false,
           errors: [],
           tasks: [],
           update_task: {},
+          logedUser: {},
         };
       },
       mounted() {
-        console.log(this.token);
-        // this.fetchIt();
         this.readTasks();
+        this.setLogedUser();
       },
       methods: {
-        /* initAddTask() {
-            // $("#add_task_model").modal("show");
-        }, */
         closeModal() {
           this.create = false;
           this.edit = false;
@@ -170,13 +176,16 @@
         newTask(){
           this.create = true;
         },
-        createTask() {
+        /* createTask() {
           axios.post('http://localhost:8000/api/task', {
             name: this.task.name,
             description: this.task.description,
             priority: this.task.priority,
           },
-        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        {headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }})
             .then((response) => {
               this.reset();
               this.tasks.push(response.data.task);
@@ -194,6 +203,13 @@
               }
             });
           window.location.href = '/';
+        }, */
+        addTask(task) {
+          taskFormService.addTask(task, this.logedUser.id);
+          this.$router.push('/')
+        },
+        setLogedUser () {
+          this.logedUser = authService.getLogedUser()
         },
         reset() {
           this.task.name = '';
@@ -202,15 +218,23 @@
         },
         readTasks() {
           axios.get('http://localhost:8000/api/task',
-        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        /* {headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        } */
+        { headers: {
+          Authorization: 'Bearer ' + window.localStorage.getItem('token')
+        }})
             .then((response) => {
               this.tasks = response.data.tasks;
             });
         },
         initUpdate(index) {
           this.errors = [];
-          this.edit = true;
           this.update_task = this.tasks[index];
+          if(this.update_task.user_id === this.logedUser.id){
+            this.edit = true;
+          }
         },
         updateTask() {
           const link = 'http://localhost:8000/api/task/';
@@ -219,7 +243,8 @@
             description: this.update_task.description,
             priority: this.update_task.priority,
           },
-        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+        {headers: {'X-Requested-With': 'XMLHttpRequest',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`}})
           .then(response => {
             this.tasks.push(this.update_task);
             this.edit = false;
@@ -236,65 +261,54 @@
                 this.errors.push(error.response.data.errors.priority[0]);
             }
           });
+          this.$router.push('/')
         },
         completeTask(task) {
-            // let conf = confirm("Completed?");
-            // if (conf === true) {
           const link = 'http://localhost:8000/api/task/complete/';
           axios.put(link + task.id,
-        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
+            { headers: {'X-Requested-With': 'XMLHttpRequest'},
+              'Authorization': `Bearer ${localStorage.getItem('token')}`})
             .then(
               this.task.completed = true,
           );
-                /* .then((response) => {
-                  this.task.completed = true;
-                }); */
-                /* .catch(error => {
-                }); */
-          window.location.href = 'http://localhost:8080';
-                // }
+          this.$router.push('/')
         },
         completedTask(task) {
-            // let conf = confirm("Uncompleted this task?");
-            // if (conf === true) {
           const link = 'http://localhost:8000/api/task/completed/';
           axios.put(link + task.id,
-        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
-            /* .then((response) => {
-              this.task.completed = false;
-            }); */
-            .then(
-              this.task.completed = false,
-            );
-            /* .catch(error => {
-            }); */
-          window.location.href = 'http://localhost:8080';
-            // }
+            { headers: {'X-Requested-With': 'XMLHttpRequest'},
+              'Authorization': `Bearer ${localStorage.getItem('token')}`})
+          .then(
+            this.task.completed = false,
+          );
+          this.$router.push('/')
         },
         deleteTask(task) {
-            // let conf = confirm("Do you really want to delete this task?");
-            // if (conf === true) {
           const link = 'http://localhost:8000/api/task/';
           axios.delete(link + task.id,
-        {headers: {'X-Requested-With': 'XMLHttpRequest'}})
-            .then((response) => {
+            {headers: {'X-Requested-With': 'XMLHttpRequest'},
+              'Authorization': `Bearer ${localStorage.getItem('token')}`})
+          .then((response) => {
               this.tasks.splice(task.id, 1);
-            });
-            /* .then(
-              this.tasks.splice(task.id, 1),
-            ); */
-            /* .catch((error) => {
-            }); */
-           window.location.href = 'http://localhost:8080/';
-            // }
+          })
+          .catch((error) => {
+            })
+           this.$router.push('/')
         },
-        /* fetchIt(){
-          this.loading = true;
-          axios.get('task?token=' + this.token).then((response) => {
-            this.tasks = response.data;
-            this.loading = false
-          });
-        }, */
+        setLogedUser () {
+          this.logedUser = authService.getLogedUser()
+        },
+        getMyTasks(){
+          axios.get('http://localhost:8000/api/task/' + this.logedUser.id, {
+            headers: {
+                Authorization: 'Bearer ' + window.localStorage.getItem('token')
+            }
+        }).then(response => {
+            this.tasks = response.data.tasks
+        }).catch(e => {
+            return e
+        })
+        }
       }
     };
 </script>
