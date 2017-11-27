@@ -72,7 +72,6 @@
 
                   <button type="button" @click="getMyTasks" class="btn btn-primary" v-if="mytask != true">My Tasks</button><br>
                
-
                   <br><div class="panel-heading">
                       <strong>All Tasks</strong>
                     </div><br>
@@ -269,9 +268,9 @@
             { headers: {'X-Requested-With': 'XMLHttpRequest'},
               'Authorization': `Bearer ${localStorage.getItem('token')}`})
             .then(
-              this.task.completed = true,
+              this.task.completed = true
           );
-          this.$router.push('/')
+         this.$router.push('/')
         },
         completedTask(task) {
           const link = 'http://localhost:8000/api/task/completed/';
@@ -279,7 +278,7 @@
             { headers: {'X-Requested-With': 'XMLHttpRequest'},
               'Authorization': `Bearer ${localStorage.getItem('token')}`})
           .then(
-            this.task.completed = false,
+            this.task.completed = false
           );
           this.$router.push('/')
         },
@@ -293,10 +292,7 @@
           })
           .catch((error) => {
             })
-           this.$router.push('/')
-        },
-        setLogedUser () {
-          this.logedUser = authService.getLogedUser()
+          this.$router.push('/')
         },
         getMyTasks(){
           axios.get('http://localhost:8000/api/task/' + this.logedUser.id, {
@@ -308,6 +304,7 @@
         }).catch(e => {
             return e
         })
+        this.$router.push('/')
         }
       }
     };

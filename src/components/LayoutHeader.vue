@@ -1,6 +1,6 @@
 <template>
  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <router-link class="navbar-brand" to="/task">Todo List</router-link>
+  <router-link class="navbar-brand" to="/">Todo List</router-link>
     <ul class="navbar-nav mr-0">
       <li class="nav-item active">
         <router-link class="nav-link" to="/login" v-if="isUserLoged === false">Log in</router-link>
@@ -8,7 +8,10 @@
       <li class="nav-item active">
         <router-link class="nav-link" to="/register" v-if="isUserLoged === false">Register</router-link>
       </li>
-       <li class="nav-item active">
+      <li class="nav-item active">
+        <router-link class="nav-link" to="/myTasks" v-if="isUserLoged === true">My Tasks</router-link>
+      </li>
+      <li class="nav-item active">
         <p class="nav-link" v-on:click="logout" v-if="isUserLoged === true">Logout</p>
       </li>
     </ul>
