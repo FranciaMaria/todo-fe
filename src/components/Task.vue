@@ -304,7 +304,6 @@
         }).catch(e => {
             return e
         })
-        this.$router.push('/')
         }
       }
     };
