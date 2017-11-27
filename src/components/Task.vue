@@ -4,7 +4,7 @@
             <div class="col-md-30">
                 <div class="panel panel-default">
 
-                  <br><button @click="newTask()" class="btn btn-info btn-xs" v-if="create != true">Create new Task</button><br>
+                  <br><button @click="newTask()" class="btn btn-info btn-xs" v-if="create != true && logedUser.id > 0">Create new Task</button><br>
 
                     <div v-if="create === true">
                       
@@ -70,10 +70,10 @@
                     </div>
                   </div>
 
-                  <button type="button" @click="getMyTasks" class="btn btn-primary" v-if="mytask != true">My Tasks</button><br>
+                  <button type="button" @click="getMyTasks" class="btn btn-primary" v-if="mytask != true && logedUser.id > 0">My Tasks</button><br>
                
                   <br><div class="panel-heading">
-                      <strong>All Tasks</strong>
+                      <strong v-if="logedUser.id > 0">All Tasks</strong>
                     </div><br>
 
                     <div class="panel-body">
