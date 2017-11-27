@@ -12,6 +12,9 @@
         <router-link class="nav-link" to="/myTasks" v-if="isUserLoged === true">My Tasks</router-link>
       </li>
       <li class="nav-item active">
+        <router-link class="nav-link" to="/newTask" v-if="isUserLoged === true">New Task</router-link>
+      </li>
+      <li class="nav-item active">
         <p class="nav-link" v-on:click="logout" v-if="isUserLoged === true">Logout</p>
       </li>
     </ul>

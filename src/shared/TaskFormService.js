@@ -17,7 +17,7 @@ export default class TaskFormService {
             .catch(e => {
                 return e
             })
-        router.push('/')
+        //router.push('/')
     }
 }
 export const taskFormService = new TaskFormService();
