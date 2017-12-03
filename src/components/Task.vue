@@ -35,11 +35,11 @@
                   </div>
                
                   <br><div class="panel-heading">
-                      <strong v-if="logedUser.id > 0">All Tasks</strong>
+                      <strong v-if="loggedUser.id > 0">All Tasks</strong>
                     </div><br>
 
                     <div class="panel-body">
-                        <table class="table table-bordered table-striped table-responsive" v-if="tasks.length > 0">
+                        <table class="table table-bordered table-striped table-responsive" v-if="tasks.length">
                             <tbody>
                             <tr>
                                 <th>
@@ -113,31 +113,29 @@
           edit: false,
           mytask: true,
           errors: [],
-          tasks: [],
+          tasks: {},
           update_task: {},
-          logedUser: {},
+          loggedUser: {},
         };
       },
       mounted() {
         this.readTasks();
-        this.setLogedUser();
+        this.setLoggedUser();
       },
       methods: {
-        setLogedUser () {
-          this.logedUser = authService.getLogedUser()
+        setLoggedUser () {
+          this.loggedUser = authService.getLoggedUser()
         },
         readTasks() {
           axios.get('http://localhost:8000/api/task',
-        /* {headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        } */
-        { headers: {
-          Authorization: 'Bearer ' + window.localStorage.getItem('token')
-        }})
+            {headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+            }})
             .then((response) => {
               this.tasks = response.data.tasks;
             });
+            //this.tasks = taskFormService.readTasks(this.loggedUser.id);
         },
       }
     };

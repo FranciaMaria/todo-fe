@@ -3,7 +3,7 @@ import router from './../router'
 // Vue.use(axios)
 export default class AuthService {
     constructor(errors) {
-        this.logedUser = this.setLogedUser()
+        this.loggedUser = this.setLoggedUser()
         this.errors = []
     }
     register(user) {
@@ -12,7 +12,7 @@ export default class AuthService {
             email: user.email,
             password: user.password
         })
-            .then(response => { })
+            .then(response => {})
             .catch(e => {
                 this.errors.push(e)
             })
@@ -42,24 +42,24 @@ export default class AuthService {
     logout() {
         window.localStorage.removeItem('token')
         window.localStorage.removeItem('user')
-        // this.$router.push('/login')
     }
 
-    setLogedUser(user) {
+    setLoggedUser(user) {
         //console.log()
         let activeUser = JSON.parse(window.localStorage.getItem('user'))
-        this.logedUser = activeUser
+        this.loggedUser = activeUser
         return activeUser
     }
 
-    getLogedUser() {
-        return this.logedUser
+    getLoggedUser() {
+        return this.loggedUser
     }
 
-    isUserLoged() {
+    isUserLoggedIn() {
         let isSetToken = !!window.localStorage.getItem('token')
         return isSetToken
     }
+    
 }
 
 export const authService = new AuthService()

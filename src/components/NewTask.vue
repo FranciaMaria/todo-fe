@@ -41,7 +41,6 @@
 
 <script>
 
-    import axios from 'axios';
     import 'bootstrap/dist/css/bootstrap.css'
     import 'bootstrap-vue/dist/bootstrap-vue.css'
     import { taskFormService } from '../shared/TaskFormService';
@@ -61,27 +60,22 @@
           },
           errors: [],
           tasks: [],
-          logedUser: {},
+          loggedUser: {},
         };
       },
-      mounted() {
-        this.setLogedUser();
-      },
+     
       methods: {
         closeModal() {
           this.create = false;
           this.edit = false;
-          window.location.href = 'http://localhost:8080';
+          this.$router.push('/myTasks');
         },
         newTask(){
           this.create = true;
         },
         addTask(task) {
-          taskFormService.addTask(task, this.logedUser.id);
-          //this.$router.push('/')
-        },
-        setLogedUser () {
-          this.logedUser = authService.getLogedUser()
+          taskFormService.addTask(task, this.loggedUser.id);
+          this.$router.push('/myTasks')
         },
         reset() {
           this.task.name = '';

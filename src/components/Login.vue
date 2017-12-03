@@ -24,10 +24,7 @@
 
 <script>
 import { authService } from '../shared/AuthService'
-import Vue from 'vue'
-import VeeValidate from 'vee-validate'
-Vue.use(VeeValidate)
-// Vue.use(axios)
+
 export default {
   data () {
     return {

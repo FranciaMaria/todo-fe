@@ -6,7 +6,7 @@
         <div class="form" v-on:submit.prevent>
           <div class="form-group">
             <label for="name">Name: </label>
-            <input v-validate data-vv-rules="required|alpha" type="text" class="form-control" id="name" name="name" v-model="user.name" />
+            <input v-validate data-vv-rules="required|alpha_spaces" type="text" class="form-control" id="name" name="name" v-model="user.name" />
             <div v-show="errors.has('name')" class="alert alert-danger">{{ errors.first('name') }}</div>
           </div>
           <div class="form-group">
@@ -29,9 +29,7 @@
 
 <script>
 import { authService } from '../shared/AuthService'
-import Vue from 'vue'
-import VeeValidate from 'vee-validate'
-Vue.use(VeeValidate)
+
 export default {
   data () {
     return {
@@ -39,13 +37,15 @@ export default {
         name: '',
         email: '',
         password: ''
-      }
+      },
+      users: []
     }
   },
   methods: {
     register (user) {
       authService.register(user)
       this.user = {}
+      this.users.push(user)
       this.$router.push('/login')
     }
   }

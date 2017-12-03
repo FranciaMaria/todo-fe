@@ -19,22 +19,25 @@ export default new Router({
     {
       path: '/',
       name: 'Task',
-      component: Task
+      component: Task,
+      meta: { requiresAuth: true}
     },
-    {
+    /* {
       path: '/task',
       name: 'Task',
       component: Task
-    },
+    }, */
     {
       path: '/myTasks',
       name: 'myTasks',
-      component: MyTasks
+      component: MyTasks,
+      meta: { requiresAuth: true }
     },
     {
       path: '/newTask',
       name: 'newTask',
-      component: NewTask
+      component: NewTask,
+      meta: { requiresAuth: true }
     },
     {
       path: '/login',
