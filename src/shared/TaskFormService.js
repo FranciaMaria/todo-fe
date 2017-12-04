@@ -3,46 +3,29 @@ import router from './../router'
 
 export default class TaskFormService {
 
-    readTasks(loggedUserId){
-        axios.get('http://localhost:8000/api/task',
+    tasks = []
+
+    readTasks(){
+        let tasksList = axios.get('http://localhost:8000/api/task',
             {
                 headers: {
                     'X-Requested-With': 'XMLHttpRequest',
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 }
-            })
-            .then((response) => {
-                this.tasks = response.data.tasks;
             });
+
+            return tasksList;
     }
 
     getMyTasks(loggedUserId) {
-        /* let lists = []
-        axios.get('http://localhost:8000/api/task/' + loggedUserId, {
+
+        let myTasksList = axios.get('http://localhost:8000/api/task/' + loggedUserId, {
             headers: {
                 Authorization: 'Bearer ' + window.localStorage.getItem('token')
             }
-        })
-            .then(response => {
-                for (let data of response.data) {
-                    console.log(data)
-                    lists.push(data)
-                }
-            }).catch(e => {
-                return e
-            })
-        return lists */
-        let tasks = []
-        axios.get('http://localhost:8000/api/task/' + loggedUserId, {
-            headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem('token')
-            }
-        }).then(response => {
-            this.tasks = response.data.tasks
-        }).catch(e => {
-            return e
         });
-        //return tasks;
+
+        return myTasksList;
     }
 
     addTask(task, loggedUserId) {
@@ -79,7 +62,6 @@ export default class TaskFormService {
                 })
                 .then(response => {
                     this.tasks.push(update_task);
-                    //this.edit = false;
                 })
                 .catch(error => {}
             );
@@ -96,7 +78,7 @@ export default class TaskFormService {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`
                 })
                 .then(
-                this.task.completed = !this.task.completed
+                task.completed = !task.completed
                 );
         }
         router.push('/myTasks');

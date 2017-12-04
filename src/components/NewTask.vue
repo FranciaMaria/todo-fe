@@ -29,7 +29,6 @@
                    
                     <div class="modal-footer">
                         <button type="button" @click="closeModal" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <!-- <button type="button" @click="createTask" class="btn btn-primary">Submit</button> -->
                         <button type="button" @click="addTask(task)" class="btn btn-primary">Submit</button>
                     </div>
 

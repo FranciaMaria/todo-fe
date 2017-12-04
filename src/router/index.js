@@ -5,28 +5,17 @@ import Login from '@/components/Login'
 import Register from '@/components/Register'
 import MyTasks from '@/components/MyTasks'
 import NewTask from '@/components/NewTask'
-//import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    /* {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }, */
     {
       path: '/',
       name: 'Task',
       component: Task,
       meta: { requiresAuth: true}
     },
-    /* {
-      path: '/task',
-      name: 'Task',
-      component: Task
-    }, */
     {
       path: '/myTasks',
       name: 'myTasks',

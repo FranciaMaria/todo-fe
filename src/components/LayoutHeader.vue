@@ -26,13 +26,11 @@
 import { authService } from '../shared/AuthService'
 export default {
   mounted () {
-    this.setLoggedUser() //,
-    //this.checkIsUserLogged()
+    this.setLoggedUser()
   },
   data () {
     return {
-      loggedUser: {},
-     // isUserLoggedIn: false
+      loggedUser: {}
     }
   },
   computed: {
@@ -44,19 +42,11 @@ export default {
     logout () {
       authService.logout()
       this.user = {}
-      //this.isUserLoggedIn = false
       this.$router.push('/login')
     },
     setLoggedUser () {
       this.loggedUser = authService.getLoggedUser()
-    },
-    /* checkIsUserLogged () {
-      if (authService.isUserLogged()) {
-        this.isUserLogged = true
-      } else {
-        this.isUserLogged = false
-      }
-    } */
+    }
   }
 }
 </script>

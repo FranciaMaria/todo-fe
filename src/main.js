@@ -22,25 +22,10 @@ new Vue({
   axios,
   template: '<App/>',
   components: { App }
-  /* template: '<Task/>',
-  components: { Task } */
 })
 
 axios.defaults.headers.common['Content-Type'] = 'application/json;charset=utf-8'
 axios.defaults.headers.common['Authorization'] = 'Bearer ' + window.localStorage.getItem('token')
-
-/* router.beforeEach((to, from, next) => {
-  if (to.path != '/login' && to.path != '/register') {
-    if (authService.isUserLoggedIn()) {
-      router.go('/')
-      next()
-    } else {
-      next('/login')
-    }
-  } else {
-    next()
-  }
-}) */
 
 router.beforeEach((to, from, next) => {
   if (to.meta.requiresAuth){

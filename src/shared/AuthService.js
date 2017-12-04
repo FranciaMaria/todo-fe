@@ -1,6 +1,6 @@
 import axios from 'axios'
 import router from './../router'
-// Vue.use(axios)
+
 export default class AuthService {
     constructor(errors) {
         this.loggedUser = this.setLoggedUser()
@@ -31,11 +31,11 @@ export default class AuthService {
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + response.data.token
                 console.log(axios.defaults.headers.common)
                 router.push({ name: 'Task', params: { id: user.id } })
-                //console.log(response)
             })
             .catch(e => {
                 this.errors.push(e)
                 console.log(this.errors)
+                router.push('/register')
             })
     }
 
@@ -45,7 +45,6 @@ export default class AuthService {
     }
 
     setLoggedUser(user) {
-        //console.log()
         let activeUser = JSON.parse(window.localStorage.getItem('user'))
         this.loggedUser = activeUser
         return activeUser
@@ -57,7 +56,13 @@ export default class AuthService {
 
     isUserLoggedIn() {
         let isSetToken = !!window.localStorage.getItem('token')
-        return isSetToken
+        if(isSetToken != 0){
+            return isSetToken
+        }
+        else{
+            console.log("No token!")
+        }
+        
     }
     
 }

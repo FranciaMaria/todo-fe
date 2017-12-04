@@ -91,7 +91,6 @@
 
 <script>
 
-    import axios from 'axios';
     import 'bootstrap/dist/css/bootstrap.css'
     import 'bootstrap-vue/dist/bootstrap-vue.css'
     import { taskFormService } from '../shared/TaskFormService';
@@ -127,15 +126,9 @@
           this.loggedUser = authService.getLoggedUser()
         },
         readTasks() {
-          axios.get('http://localhost:8000/api/task',
-            {headers: {
-                'X-Requested-With': 'XMLHttpRequest',
-                'Authorization': `Bearer ${localStorage.getItem('token')}`
-            }})
-            .then((response) => {
-              this.tasks = response.data.tasks;
+            this.tasks = taskFormService.readTasks().then((response) => {
+                this.tasks = response.data.tasks;
             });
-            //this.tasks = taskFormService.readTasks(this.loggedUser.id);
         },
       }
     };

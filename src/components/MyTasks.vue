@@ -99,7 +99,6 @@
 
 <script>
 
-    import axios from 'axios';
     import 'bootstrap/dist/css/bootstrap.css'
     import 'bootstrap-vue/dist/bootstrap-vue.css'
     import { taskFormService } from '../shared/TaskFormService';
@@ -135,16 +134,12 @@
           this.loggedUser = authService.getLoggedUser()
         },
         getMyTasks(){
-          axios.get('http://localhost:8000/api/task/' + this.loggedUser.id, {
-            headers: {
-                Authorization: 'Bearer ' + window.localStorage.getItem('token')
-            }
-         }).then(response => {
+          this.tasks = taskFormService.getMyTasks(this.loggedUser.id)
+          this.tasks.then(response => {
               this.tasks = response.data.tasks
            }).catch(e => {
                 return e
           })
-          //this.tasks = taskFormService.getMyTasks(this.loggedUser.id);
         },
         initUpdate(index) {
           this.errors = [];
@@ -161,17 +156,9 @@
         closeModal() {
           this.create = false;
           this.edit = false;
-          this.$router.push('/');
+          this.$router.push('/myTasks');
         },
         completeTask(task) {
-          /* const link = 'http://localhost:8000/api/task/complete/';
-          axios.put(link + task.id,
-            { headers: {'X-Requested-With': 'XMLHttpRequest'},
-              'Authorization': `Bearer ${localStorage.getItem('token')}`})
-            .then(
-              this.task.completed = !this.task.completed
-          );
-         this.$router.push('/myTasks'); */
          taskFormService.completeTask(task, this.loggedUser.id);
          this.$router.push('/myTasks');
         },
