@@ -87,6 +87,21 @@ export default class TaskFormService {
         }
     }
 
+    completeTask(task, loggedUserId){
+        if(task.user_id === loggedUserId){
+            const link = 'http://localhost:8000/api/task/complete/';
+            axios.put(link + task.id,
+                {
+                    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
+                })
+                .then(
+                this.task.completed = !this.task.completed
+                );
+        }
+        router.push('/myTasks');
+    }
+
     deleteTask(task, loggedUserId){
         if(task.user_id === loggedUserId){
             const link = 'http://localhost:8000/api/task/';

@@ -53,7 +53,7 @@
                                     <button type="button" @click="deleteTask(task)" class="btn btn-danger btn-xs">Delete</button>
                                 </td>
                                 <td v-if="task.completed != false && task.user_id === loggedUser.id">
-                                    <button type="button" @click="completedTask(task)" class="btn btn-default btn-xs">Completed</button>
+                                    <button type="button" @click="completeTask(task)" class="btn btn-default btn-xs">Completed</button>
                                     <button type="button" @click="deleteTask(task)" class="btn btn-danger btn-xs">Delete</button>
                                 </td>
                             </tr>
@@ -164,24 +164,16 @@
           this.$router.push('/');
         },
         completeTask(task) {
-          const link = 'http://localhost:8000/api/task/complete/';
+          /* const link = 'http://localhost:8000/api/task/complete/';
           axios.put(link + task.id,
             { headers: {'X-Requested-With': 'XMLHttpRequest'},
               'Authorization': `Bearer ${localStorage.getItem('token')}`})
             .then(
               this.task.completed = !this.task.completed
           );
+         this.$router.push('/myTasks'); */
+         taskFormService.completeTask(task, this.loggedUser.id);
          this.$router.push('/myTasks');
-        },
-        completedTask(task) {
-          const link = 'http://localhost:8000/api/task/completed/';
-          axios.put(link + task.id,
-            { headers: {'X-Requested-With': 'XMLHttpRequest'},
-              'Authorization': `Bearer ${localStorage.getItem('token')}`})
-          .then(
-            this.task.completed = !this.task.completed
-          );
-          this.$router.push('/myTasks');
         },
         deleteTask(task) {
           taskFormService.deleteTask(task, this.loggedUser.id);
